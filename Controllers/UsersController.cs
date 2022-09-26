@@ -6,6 +6,7 @@ using ThirtyDaysOfShred.API.Entities.Users;
 
 namespace ThirtyDaysOfShred.API.Controllers
 {
+    [Authorize]
     public class UsersController : BaseApiController
     {
         private readonly DataContext _context;
@@ -16,13 +17,11 @@ namespace ThirtyDaysOfShred.API.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsersAsync()
         {
             return await _context.Users.ToListAsync();
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetUserAsync(int id)
         {
