@@ -3,7 +3,7 @@ using ThirtyDaysOfShred.API.Entities.Users;
 
 namespace ThirtyDaysOfShred.API.Entities.GuitarTabs
 {
-    public class PracticeRoutine
+    public class PracticeRoutineDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

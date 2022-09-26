@@ -1,4 +1,5 @@
-﻿using ThirtyDaysOfShred.API.Entities.Users;
+﻿using ThirtyDaysOfShred.API.DTOs;
+using ThirtyDaysOfShred.API.Entities.Users;
 
 namespace ThirtyDaysOfShred.API.Interfaces
 {
@@ -9,5 +10,7 @@ namespace ThirtyDaysOfShred.API.Interfaces
         Task<IEnumerable<AppUser>> GetUsersAsync();
         Task<AppUser> GetUserByIdAsync(int id);
         Task<AppUser> GetUserByUsernameAsync(string username);
+        Task<IEnumerable<MemberDto>> GetMembersAsync();
+        Task<MemberDto> GetMemberAsync(string username);
     }
 }

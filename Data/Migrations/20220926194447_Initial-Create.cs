@@ -18,10 +18,11 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    KnownAs = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    KnownAs = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastActive = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProfileImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -118,7 +119,7 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SkillLevel = table.Column<int>(type: "int", nullable: false),
                     Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -130,7 +131,7 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     AuthoredTabsId = table.Column<int>(type: "int", nullable: true),
                     FavoritedTabsId = table.Column<int>(type: "int", nullable: true),
                     LikedTabsId = table.Column<int>(type: "int", nullable: true),
-                    PracticeRoutineId = table.Column<int>(type: "int", nullable: true)
+                    PracticeRoutineDtoId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -151,8 +152,8 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                         principalTable: "LikedTabs",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_GuitarTabs_PracticeRoutines_PracticeRoutineId",
-                        column: x => x.PracticeRoutineId,
+                        name: "FK_GuitarTabs_PracticeRoutines_PracticeRoutineDtoId",
+                        column: x => x.PracticeRoutineDtoId,
                         principalTable: "PracticeRoutines",
                         principalColumn: "Id");
                 });
@@ -172,14 +173,14 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     VideoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NumberOfFavorites = table.Column<int>(type: "int", nullable: false),
                     NumberOfLikes = table.Column<int>(type: "int", nullable: false),
-                    PracticeRoutineId = table.Column<int>(type: "int", nullable: true)
+                    PracticeRoutineDtoId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Lessons", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Lessons_PracticeRoutines_PracticeRoutineId",
-                        column: x => x.PracticeRoutineId,
+                        name: "FK_Lessons_PracticeRoutines_PracticeRoutineDtoId",
+                        column: x => x.PracticeRoutineDtoId,
                         principalTable: "PracticeRoutines",
                         principalColumn: "Id");
                 });
@@ -191,16 +192,16 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TagName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GuitarTabId = table.Column<int>(type: "int", nullable: true),
                     LessonId = table.Column<int>(type: "int", nullable: true),
-                    PracticeRoutineId = table.Column<int>(type: "int", nullable: true),
-                    TabId = table.Column<int>(type: "int", nullable: true)
+                    PracticeRoutineDtoId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tags", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tags_GuitarTabs_TabId",
-                        column: x => x.TabId,
+                        name: "FK_Tags_GuitarTabs_GuitarTabId",
+                        column: x => x.GuitarTabId,
                         principalTable: "GuitarTabs",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -209,8 +210,8 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                         principalTable: "Lessons",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Tags_PracticeRoutines_PracticeRoutineId",
-                        column: x => x.PracticeRoutineId,
+                        name: "FK_Tags_PracticeRoutines_PracticeRoutineDtoId",
+                        column: x => x.PracticeRoutineDtoId,
                         principalTable: "PracticeRoutines",
                         principalColumn: "Id");
                 });
@@ -241,14 +242,14 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                 column: "LikedTabsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GuitarTabs_PracticeRoutineId",
+                name: "IX_GuitarTabs_PracticeRoutineDtoId",
                 table: "GuitarTabs",
-                column: "PracticeRoutineId");
+                column: "PracticeRoutineDtoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lessons_PracticeRoutineId",
+                name: "IX_Lessons_PracticeRoutineDtoId",
                 table: "Lessons",
-                column: "PracticeRoutineId");
+                column: "PracticeRoutineDtoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LikedTabs_AppUserId",
@@ -261,19 +262,19 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tags_GuitarTabId",
+                table: "Tags",
+                column: "GuitarTabId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tags_LessonId",
                 table: "Tags",
                 column: "LessonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tags_PracticeRoutineId",
+                name: "IX_Tags_PracticeRoutineDtoId",
                 table: "Tags",
-                column: "PracticeRoutineId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tags_TabId",
-                table: "Tags",
-                column: "TabId");
+                column: "PracticeRoutineDtoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

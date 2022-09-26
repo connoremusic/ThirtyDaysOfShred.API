@@ -18,6 +18,6 @@ namespace ThirtyDaysOfShred.API.Data
         public DbSet<AuthoredTabs> AuthoredTabs { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
-        public DbSet<PracticeRoutine> PracticeRoutines { get; set; }
+        public DbSet<PracticeRoutineDto> PracticeRoutines { get; set; }
     }
 }

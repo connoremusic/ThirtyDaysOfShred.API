@@ -13,15 +13,16 @@ namespace ThirtyDaysOfShred.API.Entities.Users
         public string KnownAs { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
         public DateTime LastActive { get; set; } = DateTime.Now;
+        public string Gender { get; set; }
         public string ProfileImageUrl { get; set; }
         public ICollection<AuthoredTabs> AuthoredTabs { get; set; }
         public ICollection<FavoritedTabs> FavoriteTabs { get; set; }
         public ICollection<LikedTabs> LikedTabs { get; set; }
-        public ICollection<PracticeRoutine> PracticeRoutines { get; set; }
+        public ICollection<PracticeRoutineDto> PracticeRoutines { get; set; }
 
-        public int GetAge()
-        {
-            return DateOfBirth.CalculateAge();
-        }
+        //public int GetAge()
+        //{
+        //    return DateOfBirth.CalculateAge();
+        //}
     }
 }
