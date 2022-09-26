@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
+using ThirtyDaysOfShred.API.Entities.GuitarTabs;
 using ThirtyDaysOfShred.API.Entities.Users;
 
 namespace ThirtyDaysOfShred.API.Data
@@ -24,6 +25,21 @@ namespace ThirtyDaysOfShred.API.Data
                 user.PasswordSalt = hmac.Key;
 
                 context.Users.Add(user);
+            }
+
+            await context.SaveChangesAsync();
+        }
+
+        public static async Task SeedGuitarTabs(DataContext context)
+        {
+            if (await context.GuitarTabs.AnyAsync()) return;
+
+            var guitarTabData = await File.ReadAllTextAsync("Data/GuitarTabSeedData.json");
+            var guitarTabs = JsonSerializer.Deserialize<List<GuitarTab>>(guitarTabData);
+
+            foreach (var guitarTab in guitarTabs)
+            {
+                context.GuitarTabs.Add(guitarTab);
             }
 
             await context.SaveChangesAsync();

@@ -12,7 +12,7 @@ namespace ThirtyDaysOfShred.API.Data
         }
 
         public DbSet<AppUser> Users { get; set; }
-        public DbSet<Tab> GuitarTabs { get; set; }
+        public DbSet<GuitarTab> GuitarTabs { get; set; }
         public DbSet<FavoritedTabs> FavoritedTabs { get; set; }
         public DbSet<LikedTabs> LikedTabs { get; set; }
         public DbSet<AuthoredTabs> AuthoredTabs { get; set; }

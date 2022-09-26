@@ -65,6 +65,7 @@ static async Task Configure(WebApplication host)
         var context = services.GetRequiredService<DataContext>();
         await context.Database.MigrateAsync();
         await Seed.SeedUsers(context);
+        await Seed.SeedGuitarTabs(context);
     }
     catch (Exception ex)
     {

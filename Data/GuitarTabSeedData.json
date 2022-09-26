@@ -1,0 +1,29 @@
+﻿[
+    {
+        "Name": "Wonderwall Bass Tab",
+        "Description": "The greatest tab ever made",
+        "SkillLevel": 1,
+        "Author": "Oasis",
+        "IsPublic": true,
+        "FileLocationUrl": "https://www.songsterr.com/a/wsa/oasis-wonderwall-bass-tab-s2t4",
+        "NumberOfFavorites": 1000
+    },
+    {
+        "Name": "Tears in Heaven Tab",
+        "Description": "Wow, so emotion, much feelings",
+        "SkillLevel": 5,
+        "Author": "Eric Clapton",
+        "IsPublic": true,
+        "FileLocationUrl": "https://www.songsterr.com/a/wsa/eric-clapton-tears-in-heaven-tab-s4t3",
+        "NumberOfFavorites": 200
+    },
+    {
+        "Name": "Paint it Black Tab",
+        "Description": "They never stop touring lawl",
+        "SkillLevel": 3,
+        "Author": "The Rolling Stones",
+        "IsPublic": true,
+        "FileLocationUrl": "https://www.songsterr.com/a/wsa/rolling-stones-paint-it-black-tab-s5t1",
+        "NumberOfFavorites": 500
+    }
+]

@@ -11,7 +11,7 @@ namespace ThirtyDaysOfShred.API.Entities.GuitarTabs
         public int SkillLevel { get; set; }
         public string Author { get; set; }
         public bool IsPublic { get; set; }
-        public ICollection<Tab> Tabs { get; set; }
+        public ICollection<GuitarTab> Tabs { get; set; }
         public ICollection<Lesson> Lessons { get; set; }
         public ICollection<Tag> Tags { get; set; }
         public DateTime Created { get; set; }

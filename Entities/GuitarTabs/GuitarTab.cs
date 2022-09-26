@@ -3,10 +3,10 @@
 namespace ThirtyDaysOfShred.API.Entities.GuitarTabs
 {
     public enum AppUserType { Author, Liker, Favoriter }
-    public class Tab
+    public class GuitarTab
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Title { get; set; }
         public string Description { get; set; }
         public int SkillLevel { get; set; }
         public string Author { get; set; }
