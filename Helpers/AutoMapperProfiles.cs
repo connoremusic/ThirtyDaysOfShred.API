@@ -15,6 +15,7 @@ namespace ThirtyDaysOfShred.API.Helpers
             CreateMap<AuthoredTabs, AuthoredTabsDto>();
             CreateMap<FavoritedTabs, FavoritedTabsDto>();
             CreateMap<LikedTabs, LikedTabsDto>();
+            CreateMap<MemberUpdateDto, AppUser>();
         }
     }
 }
