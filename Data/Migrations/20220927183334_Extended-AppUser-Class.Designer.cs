@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThirtyDaysOfShred.API.Data;
 
@@ -11,9 +12,10 @@ using ThirtyDaysOfShred.API.Data;
 namespace ThirtyDaysOfShred.API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220927183334_Extended-AppUser-Class")]
+    partial class ExtendedAppUserClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -274,6 +276,9 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Goals")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Influences")
                         .HasColumnType("nvarchar(max)");
 
@@ -298,27 +303,6 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.Users.Goal", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("AppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.ToTable("Goal");
                 });
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.AuthoredTabs", b =>
@@ -406,13 +390,6 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                         .HasForeignKey("PracticeRoutineDtoId");
                 });
 
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.Users.Goal", b =>
-                {
-                    b.HasOne("ThirtyDaysOfShred.API.Entities.Users.AppUser", null)
-                        .WithMany("Goals")
-                        .HasForeignKey("AppUserId");
-                });
-
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.AuthoredTabs", b =>
                 {
                     b.Navigation("Tabs");
@@ -452,8 +429,6 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     b.Navigation("AuthoredTabs");
 
                     b.Navigation("FavoriteTabs");
-
-                    b.Navigation("Goals");
 
                     b.Navigation("LikedTabs");
 
