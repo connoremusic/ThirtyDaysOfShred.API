@@ -1,6 +1,6 @@
 ﻿[
     {
-        "Name": "Wonderwall Bass Tab",
+        "Title": "Wonderwall Bass Tab",
         "Description": "The greatest tab ever made",
         "SkillLevel": 1,
         "Author": "Oasis",
@@ -9,7 +9,7 @@
         "NumberOfFavorites": 1000
     },
     {
-        "Name": "Tears in Heaven Tab",
+        "Title": "Tears in Heaven Tab",
         "Description": "Wow, so emotion, much feelings",
         "SkillLevel": 5,
         "Author": "Eric Clapton",
@@ -18,7 +18,7 @@
         "NumberOfFavorites": 200
     },
     {
-        "Name": "Paint it Black Tab",
+        "Title": "Paint it Black Tab",
         "Description": "They never stop touring lawl",
         "SkillLevel": 3,
         "Author": "The Rolling Stones",

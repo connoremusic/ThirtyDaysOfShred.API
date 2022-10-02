@@ -32,7 +32,7 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Calls the function to seed data and apply migrations to database
-Configure(app);
+await Configure(app);
 
 
 
@@ -47,7 +47,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("https://localhost:4200"));
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -73,5 +73,5 @@ static async Task Configure(WebApplication host)
         logger.LogError(ex, "An error occurred during migration");
     }
 
-    await host.RunAsync();
+    //await host.RunAsync();
 }

@@ -2,9 +2,9 @@
 
 namespace ThirtyDaysOfShred.API.DTOs
 {
-    public class FavoritedTabsDto
+    public class FavoritedTabDto
     {
         public int Id { get; set; }
-        public ICollection<GuitarTab> Tabs { get; set; }
+        public GuitarTab GuitarTab { get; set; }
     }
 }

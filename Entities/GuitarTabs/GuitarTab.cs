@@ -13,7 +13,7 @@ namespace ThirtyDaysOfShred.API.Entities.GuitarTabs
         public bool IsPublic { get; set; }
         public ICollection<Tag> Tags { get; set; }
         public string FileLocationUrl { get; set; }
-        public string PreviewImageUrl { get; set; }
+        public TabPreviewImage PreviewImage { get; set; }
         public int NumberOfFavorites { get; set; }
         public int NumberOfLikes { get; set; }
     }

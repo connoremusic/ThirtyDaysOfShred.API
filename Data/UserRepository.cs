@@ -41,6 +41,7 @@ namespace ThirtyDaysOfShred.API.Data
         public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
             return await _context.Users
+                .Include(p => p.ProfilePhoto)
                 .Include(x => x.PracticeRoutines)
                 .Include(x => x.FavoriteTabs)
                 .Include(x => x.LikedTabs)
@@ -58,6 +59,13 @@ namespace ThirtyDaysOfShred.API.Data
 
         public async Task<bool> SaveAllAsync()
         {
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> UpdateProfilePhoto(ProfilePhoto photo)
+        {
+            _context.Entry(photo).State = EntityState.Modified;
+
             return await _context.SaveChangesAsync() > 0;
         }
 

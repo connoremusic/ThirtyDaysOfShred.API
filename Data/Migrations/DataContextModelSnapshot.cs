@@ -22,7 +22,7 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.AuthoredTabs", b =>
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.AuthoredTab", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,14 +33,19 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     b.Property<int>("AppUserId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("GuitarTabId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("AuthoredTabs");
+                    b.HasIndex("GuitarTabId");
+
+                    b.ToTable("AuthoredTab");
                 });
 
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.FavoritedTabs", b =>
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.FavoritedTab", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,11 +56,16 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     b.Property<int>("AppUserId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("GuitarTabId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("FavoritedTabs");
+                    b.HasIndex("GuitarTabId");
+
+                    b.ToTable("FavoritedTab");
                 });
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTab", b =>
@@ -69,23 +79,14 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("AuthoredTabsId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("FavoritedTabsId")
-                        .HasColumnType("int");
 
                     b.Property<string>("FileLocationUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("LikedTabsId")
-                        .HasColumnType("int");
 
                     b.Property<int>("NumberOfFavorites")
                         .HasColumnType("int");
@@ -96,9 +97,6 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     b.Property<int?>("PracticeRoutineDtoId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PreviewImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("SkillLevel")
                         .HasColumnType("int");
 
@@ -107,18 +105,12 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthoredTabsId");
-
-                    b.HasIndex("FavoritedTabsId");
-
-                    b.HasIndex("LikedTabsId");
-
                     b.HasIndex("PracticeRoutineDtoId");
 
                     b.ToTable("GuitarTabs");
                 });
 
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.LikedTabs", b =>
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.LikedTab", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -129,11 +121,16 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     b.Property<int>("AppUserId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("GuitarTabId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("LikedTabs");
+                    b.HasIndex("GuitarTabId");
+
+                    b.ToTable("LikedTab");
                 });
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.PracticeRoutineDto", b =>
@@ -173,6 +170,31 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     b.HasIndex("AppUserId");
 
                     b.ToTable("PracticeRoutines");
+                });
+
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.TabPreviewImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("GuitarTabId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuitarTabId")
+                        .IsUnique();
+
+                    b.ToTable("TabPreviewImage");
                 });
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.Tag", b =>
@@ -289,9 +311,6 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("ProfileImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
@@ -308,7 +327,7 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("AppUserId")
+                    b.Property<int>("AppUserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -321,7 +340,32 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     b.ToTable("Goal");
                 });
 
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.AuthoredTabs", b =>
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.Users.ProfilePhoto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId")
+                        .IsUnique();
+
+                    b.ToTable("ProfilePhoto");
+                });
+
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.AuthoredTab", b =>
                 {
                     b.HasOne("ThirtyDaysOfShred.API.Entities.Users.AppUser", "AppUser")
                         .WithMany("AuthoredTabs")
@@ -329,10 +373,16 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTab", "GuitarTab")
+                        .WithMany()
+                        .HasForeignKey("GuitarTabId");
+
                     b.Navigation("AppUser");
+
+                    b.Navigation("GuitarTab");
                 });
 
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.FavoritedTabs", b =>
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.FavoritedTab", b =>
                 {
                     b.HasOne("ThirtyDaysOfShred.API.Entities.Users.AppUser", "AppUser")
                         .WithMany("FavoriteTabs")
@@ -340,29 +390,23 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTab", "GuitarTab")
+                        .WithMany()
+                        .HasForeignKey("GuitarTabId");
+
                     b.Navigation("AppUser");
+
+                    b.Navigation("GuitarTab");
                 });
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTab", b =>
                 {
-                    b.HasOne("ThirtyDaysOfShred.API.Entities.GuitarTabs.AuthoredTabs", null)
-                        .WithMany("Tabs")
-                        .HasForeignKey("AuthoredTabsId");
-
-                    b.HasOne("ThirtyDaysOfShred.API.Entities.GuitarTabs.FavoritedTabs", null)
-                        .WithMany("Tabs")
-                        .HasForeignKey("FavoritedTabsId");
-
-                    b.HasOne("ThirtyDaysOfShred.API.Entities.GuitarTabs.LikedTabs", null)
-                        .WithMany("Tabs")
-                        .HasForeignKey("LikedTabsId");
-
                     b.HasOne("ThirtyDaysOfShred.API.Entities.GuitarTabs.PracticeRoutineDto", null)
                         .WithMany("Tabs")
                         .HasForeignKey("PracticeRoutineDtoId");
                 });
 
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.LikedTabs", b =>
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.LikedTab", b =>
                 {
                     b.HasOne("ThirtyDaysOfShred.API.Entities.Users.AppUser", "AppUser")
                         .WithMany("LikedTabs")
@@ -370,7 +414,13 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTab", "GuitarTab")
+                        .WithMany()
+                        .HasForeignKey("GuitarTabId");
+
                     b.Navigation("AppUser");
+
+                    b.Navigation("GuitarTab");
                 });
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.PracticeRoutineDto", b =>
@@ -382,6 +432,17 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.TabPreviewImage", b =>
+                {
+                    b.HasOne("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTab", "GuitarTab")
+                        .WithOne("PreviewImage")
+                        .HasForeignKey("ThirtyDaysOfShred.API.Entities.GuitarTabs.TabPreviewImage", "GuitarTabId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GuitarTab");
                 });
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.Tag", b =>
@@ -408,29 +469,31 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.Users.Goal", b =>
                 {
-                    b.HasOne("ThirtyDaysOfShred.API.Entities.Users.AppUser", null)
+                    b.HasOne("ThirtyDaysOfShred.API.Entities.Users.AppUser", "AppUser")
                         .WithMany("Goals")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
                 });
 
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.AuthoredTabs", b =>
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.Users.ProfilePhoto", b =>
                 {
-                    b.Navigation("Tabs");
-                });
+                    b.HasOne("ThirtyDaysOfShred.API.Entities.Users.AppUser", "AppUser")
+                        .WithOne("ProfilePhoto")
+                        .HasForeignKey("ThirtyDaysOfShred.API.Entities.Users.ProfilePhoto", "AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.FavoritedTabs", b =>
-                {
-                    b.Navigation("Tabs");
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTab", b =>
                 {
-                    b.Navigation("Tags");
-                });
+                    b.Navigation("PreviewImage");
 
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.LikedTabs", b =>
-                {
-                    b.Navigation("Tabs");
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.PracticeRoutineDto", b =>
@@ -458,6 +521,8 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     b.Navigation("LikedTabs");
 
                     b.Navigation("PracticeRoutines");
+
+                    b.Navigation("ProfilePhoto");
                 });
 #pragma warning restore 612, 618
         }

@@ -11,11 +11,15 @@ namespace ThirtyDaysOfShred.API.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<AppUser, MemberDto>()
-                .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
-            CreateMap<AuthoredTabs, AuthoredTabsDto>();
-            CreateMap<FavoritedTabs, FavoritedTabsDto>();
-            CreateMap<LikedTabs, LikedTabsDto>();
+                .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()))
+                .ForMember(dest => dest.ProfilePhoto, opt => opt.MapFrom(src => src.ProfilePhoto));
+            CreateMap<AuthoredTab, AuthoredTabDto>();
+            CreateMap<FavoritedTab, FavoritedTabDto>();
+            CreateMap<LikedTab, LikedTabDto>();
             CreateMap<MemberUpdateDto, AppUser>();
+            CreateMap<ProfilePhoto, ProfilePhotoDto>();
+            CreateMap<TabPreviewImage, TabPreviewImageDto>();
+            CreateMap<RegisterDto, AppUser>();
         }
     }
 }
