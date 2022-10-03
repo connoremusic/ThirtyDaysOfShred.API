@@ -7,6 +7,7 @@ using ThirtyDaysOfShred.API.Data;
 using ThirtyDaysOfShred.API.DTOs;
 using ThirtyDaysOfShred.API.Entities.Users;
 using ThirtyDaysOfShred.API.Extensions;
+using ThirtyDaysOfShred.API.Helpers;
 using ThirtyDaysOfShred.API.Interfaces;
 
 namespace ThirtyDaysOfShred.API.Controllers
@@ -26,9 +27,18 @@ namespace ThirtyDaysOfShred.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersAsync()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersAsync([FromQuery]UserParams userParams)
         {
-            var users = await _userRepository.GetMembersAsync();
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            userParams.CurrentUserName = User.GetUsername();
+
+            if (string.IsNullOrEmpty(userParams.Gender))
+                userParams.Gender = user.Gender == "male" ? "female" : "male";
+
+            var users = await _userRepository.GetMembersAsync(userParams);
+
+            Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
+
             return Ok(users);
         }
 
