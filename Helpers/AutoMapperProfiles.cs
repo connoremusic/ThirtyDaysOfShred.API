@@ -13,6 +13,7 @@ namespace ThirtyDaysOfShred.API.Helpers
             CreateMap<AppUser, MemberDto>()
                 .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()))
                 .ForMember(dest => dest.ProfilePhoto, opt => opt.MapFrom(src => src.ProfilePhoto));
+            CreateMap<Goal, GoalDto>();
             CreateMap<AuthoredTab, AuthoredTabDto>();
             CreateMap<FavoritedTab, FavoritedTabDto>();
             CreateMap<LikedTab, LikedTabDto>();

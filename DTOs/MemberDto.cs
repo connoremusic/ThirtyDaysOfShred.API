@@ -14,7 +14,7 @@ namespace ThirtyDaysOfShred.API.DTOs
         public string Country { get; set; }
         public string About { get; set; }
         public string Influences { get; set; }
-        public ICollection<Goal> Goals { get; set; }
+        public ICollection<GoalDto> Goals { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
         public DateTime LastActive { get; set; } = DateTime.Now;
         public ICollection<AuthoredTab> AuthoredTabs { get; set; }

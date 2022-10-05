@@ -39,6 +39,12 @@ namespace ThirtyDaysOfShred.API.Data
 
             query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
 
+            query = userParams.OrderBy switch
+            {
+                "created" => query.OrderByDescending(u => u.Created),
+                _ => query.OrderByDescending(u => u.LastActive)
+            };
+
             return await PagedList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(_mapper
                 .ConfigurationProvider).AsNoTracking(),
                 userParams.PageNumber, userParams.PageSize);
@@ -53,6 +59,7 @@ namespace ThirtyDaysOfShred.API.Data
         {
             return await _context.Users
                 .Include(p => p.ProfilePhoto)
+                .Include(x => x.Goals)
                 .Include(x => x.PracticeRoutines)
                 .Include(x => x.FavoriteTabs)
                 .Include(x => x.LikedTabs)
@@ -62,6 +69,7 @@ namespace ThirtyDaysOfShred.API.Data
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
             return await _context.Users
+                .Include(x => x.Goals)
                 .Include(x => x.PracticeRoutines)
                 .Include(x => x.FavoriteTabs)
                 .Include(x => x.LikedTabs)
