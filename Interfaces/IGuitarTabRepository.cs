@@ -1,4 +1,5 @@
-﻿using ThirtyDaysOfShred.API.Entities.GuitarTabs;
+﻿using ThirtyDaysOfShred.API.DTOs;
+using ThirtyDaysOfShred.API.Entities.GuitarTabs;
 
 namespace ThirtyDaysOfShred.API.Interfaces
 {
@@ -11,5 +12,6 @@ namespace ThirtyDaysOfShred.API.Interfaces
         Task<IEnumerable<GuitarTab>> GetGuitarTabsByTitleAsync(string title);
         Task<IEnumerable<GuitarTab>> GetGuitarTabsByAuthorAsync(string author);
         Task<IEnumerable<GuitarTab>> GetGuitarTabsBySkillLevel(int skillLevel);
+        Task<IEnumerable<GuitarTabDto>> GetGuitarTabDtosAsync();
     }
 }

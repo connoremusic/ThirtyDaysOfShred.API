@@ -21,6 +21,8 @@ namespace ThirtyDaysOfShred.API.Helpers
             CreateMap<ProfilePhoto, ProfilePhotoDto>();
             CreateMap<TabPreviewImage, TabPreviewImageDto>();
             CreateMap<RegisterDto, AppUser>();
+            CreateMap<GuitarTab, GuitarTabDto>()
+                .ForMember(dest => dest.PreviewImageUrl, opt => opt.MapFrom(src => src.PreviewImage.Url));
         }
     }
 }

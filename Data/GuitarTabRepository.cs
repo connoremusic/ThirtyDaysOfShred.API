@@ -1,5 +1,8 @@
 ﻿using System.Linq;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using ThirtyDaysOfShred.API.DTOs;
 using ThirtyDaysOfShred.API.Entities.GuitarTabs;
 using ThirtyDaysOfShred.API.Interfaces;
 
@@ -8,10 +11,17 @@ namespace ThirtyDaysOfShred.API.Data
     public class GuitarTabRepository : IGuitarTabRepository
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public GuitarTabRepository(DataContext context)
+        public GuitarTabRepository(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
+        }
+
+        public async Task<IEnumerable<GuitarTabDto>> GetGuitarTabDtosAsync()
+        {
+            return await _context.GuitarTabs.ProjectTo<GuitarTabDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
         public async Task<IEnumerable<GuitarTab>> GetGuitarTabsByAuthorAsync(string author)
@@ -31,7 +41,10 @@ namespace ThirtyDaysOfShred.API.Data
 
         public async Task<IEnumerable<GuitarTab>> GetGuitarTabsAsync()
         {
-            return await _context.GuitarTabs.ToListAsync();
+            return await _context.GuitarTabs
+                .Include(x => x.Tags)
+                .Include(x => x.PreviewImage)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<GuitarTab>> GetGuitarTabsBySkillLevel(int skillLevel)
