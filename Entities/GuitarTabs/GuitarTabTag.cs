@@ -1,6 +1,6 @@
 ﻿namespace ThirtyDaysOfShred.API.Entities.GuitarTabs
 {
-    public class Tag
+    public class GuitarTabTag
     {
         public int Id { get; set; }
         public string TagName { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Linq;
+using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +19,14 @@ namespace ThirtyDaysOfShred.API.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IPhotoService _photoService;
+        private readonly IGuitarTabRepository _guitarTabRepository;
 
-        public UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService)
+        public UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService, IGuitarTabRepository guitarTabRepository)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _photoService = photoService;
+            _guitarTabRepository = guitarTabRepository;
         }
 
         [HttpGet]
@@ -117,5 +120,19 @@ namespace ThirtyDaysOfShred.API.Controllers
 
             return BadRequest("Failed to delete the photo");
         }
+
+        //[HttpPut("tab-like/{id}")]
+        //public async Task<ActionResult> FavoriteGuitarTab(int guitarTabId)
+        //{
+        //    var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+
+        //    var guitarTab = await _guitarTabRepository.GetGuitarTabByIdAsync(guitarTabId);
+
+        //    user.FavoriteTabs.Add(guitarTab);
+
+        //    if (await _userRepository.SaveAllAsync()) return Ok();
+
+        //    return BadRequest("Something went wrong");
+        //}
     }
 }

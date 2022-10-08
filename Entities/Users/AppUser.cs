@@ -1,4 +1,5 @@
 ﻿using ThirtyDaysOfShred.API.Entities.GuitarTabs;
+using ThirtyDaysOfShred.API.Entities.PracticeRoutines;
 
 namespace ThirtyDaysOfShred.API.Entities.Users
 {
@@ -18,15 +19,7 @@ namespace ThirtyDaysOfShred.API.Entities.Users
         public ICollection<Goal> Goals { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
         public DateTime LastActive { get; set; } = DateTime.Now;
-        public ICollection<AuthoredTab> AuthoredTabs { get; set; }
-        public ICollection<FavoritedTab> FavoriteTabs { get; set; }
-        public ICollection<LikedTab> LikedTabs { get; set; }
-        public ICollection<PracticeRoutineDto> PracticeRoutines { get; set; }
-
-        // defunct since this method now exists in the Member properties and is created by the AutoMapperProfile
-        //public int GetAge()
-        //{
-        //    return DateOfBirth.CalculateAge();
-        //}
+        public ICollection<GuitarTabFavorite> FavoriteTabs { get; set; }
+        public ICollection<PracticeRoutine> PracticeRoutines { get; set; }
     }
 }

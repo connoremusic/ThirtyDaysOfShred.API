@@ -5,6 +5,7 @@ using ThirtyDaysOfShred.API.Interfaces;
 using AutoMapper.QueryableExtensions;
 using AutoMapper;
 using ThirtyDaysOfShred.API.Helpers;
+using ThirtyDaysOfShred.API.Entities.GuitarTabs;
 
 namespace ThirtyDaysOfShred.API.Data
 {
@@ -62,7 +63,6 @@ namespace ThirtyDaysOfShred.API.Data
                 .Include(x => x.Goals)
                 .Include(x => x.PracticeRoutines)
                 .Include(x => x.FavoriteTabs)
-                .Include(x => x.LikedTabs)
                 .SingleOrDefaultAsync(x => x.UserName == username);
         }
 
@@ -72,7 +72,6 @@ namespace ThirtyDaysOfShred.API.Data
                 .Include(x => x.Goals)
                 .Include(x => x.PracticeRoutines)
                 .Include(x => x.FavoriteTabs)
-                .Include(x => x.LikedTabs)
                 .ToListAsync();
         }
 
@@ -91,6 +90,11 @@ namespace ThirtyDaysOfShred.API.Data
         public void Update(AppUser user)
         {
             _context.Entry(user).State = EntityState.Modified;
+        }
+
+        public Task<bool> LikeGuitarTabAsync(GuitarTab guitarTab)
+        {
+            throw new NotImplementedException();
         }
     }
 }

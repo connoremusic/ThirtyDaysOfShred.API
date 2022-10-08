@@ -11,10 +11,9 @@ namespace ThirtyDaysOfShred.API.Entities.Lessons
         public int SkillLevel { get; set; }
         public string Author { get; set; }
         public bool IsPublic { get; set; }
-        public ICollection<Tag> Tags { get; set; }
+        public ICollection<LessonTag> Tags { get; set; }
         public string FileLocationUrl { get; set; }
         public string VideoUrl { get; set; }
         public int NumberOfFavorites { get; set; }
-        public int NumberOfLikes { get; set; }
     }
 }

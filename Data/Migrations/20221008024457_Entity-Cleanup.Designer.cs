@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThirtyDaysOfShred.API.Data;
 
@@ -11,9 +12,10 @@ using ThirtyDaysOfShred.API.Data;
 namespace ThirtyDaysOfShred.API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221008024457_Entity-Cleanup")]
+    partial class EntityCleanup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,6 +32,9 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("AppUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Author")
                         .HasColumnType("nvarchar(max)");
 
@@ -45,7 +50,10 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     b.Property<int>("NumberOfFavorites")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PracticeRoutineId")
+                    b.Property<int>("NumberOfLikes")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PracticeRoutineDtoId")
                         .HasColumnType("int");
 
                     b.Property<int>("SkillLevel")
@@ -56,136 +64,14 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PracticeRoutineId");
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("PracticeRoutineDtoId");
 
                     b.ToTable("GuitarTabs");
                 });
 
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTabFavorite", b =>
-                {
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GuitarTabId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AppUserId", "GuitarTabId");
-
-                    b.HasIndex("GuitarTabId");
-
-                    b.ToTable("FavoriteGuitarTabs");
-                });
-
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTabTag", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("GuitarTabId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TagName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GuitarTabId");
-
-                    b.ToTable("GuitarTabTags");
-                });
-
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.TabPreviewImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("GuitarTabId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PublicId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GuitarTabId")
-                        .IsUnique();
-
-                    b.ToTable("TabPreviewImage");
-                });
-
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.Lessons.Lesson", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Author")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FileLocationUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsPublic")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NumberOfFavorites")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PracticeRoutineId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SkillLevel")
-                        .HasColumnType("int");
-
-                    b.Property<string>("VideoUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PracticeRoutineId");
-
-                    b.ToTable("Lessons");
-                });
-
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.Lessons.LessonTag", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("LessonId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TagName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LessonId");
-
-                    b.ToTable("LessonTags");
-                });
-
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.PracticeRoutines.PracticeRoutine", b =>
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.PracticeRoutineDto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -224,7 +110,7 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     b.ToTable("PracticeRoutines");
                 });
 
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.PracticeRoutines.PracticeRoutineTag", b =>
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.TabPreviewImage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -232,7 +118,38 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("PracticeRoutineId")
+                    b.Property<int>("GuitarTabId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuitarTabId")
+                        .IsUnique();
+
+                    b.ToTable("TabPreviewImage");
+                });
+
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("GuitarTabId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LessonId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PracticeRoutineDtoId")
                         .HasColumnType("int");
 
                     b.Property<string>("TagName")
@@ -240,9 +157,58 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PracticeRoutineId");
+                    b.HasIndex("GuitarTabId");
 
-                    b.ToTable("PracticeRoutineTags");
+                    b.HasIndex("LessonId");
+
+                    b.HasIndex("PracticeRoutineDtoId");
+
+                    b.ToTable("Tags");
+                });
+
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.Lessons.Lesson", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Author")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileLocationUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumberOfFavorites")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfLikes")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PracticeRoutineDtoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkillLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VideoUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PracticeRoutineDtoId");
+
+                    b.ToTable("Lessons");
                 });
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.Users.AppUser", b =>
@@ -339,35 +305,24 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTab", b =>
                 {
-                    b.HasOne("ThirtyDaysOfShred.API.Entities.PracticeRoutines.PracticeRoutine", null)
+                    b.HasOne("ThirtyDaysOfShred.API.Entities.Users.AppUser", null)
+                        .WithMany("FavoriteTabs")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("ThirtyDaysOfShred.API.Entities.GuitarTabs.PracticeRoutineDto", null)
                         .WithMany("Tabs")
-                        .HasForeignKey("PracticeRoutineId");
+                        .HasForeignKey("PracticeRoutineDtoId");
                 });
 
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTabFavorite", b =>
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.PracticeRoutineDto", b =>
                 {
                     b.HasOne("ThirtyDaysOfShred.API.Entities.Users.AppUser", "AppUser")
-                        .WithMany("FavoriteTabs")
+                        .WithMany("PracticeRoutines")
                         .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTab", "GuitarTab")
-                        .WithMany("FavoritedByUser")
-                        .HasForeignKey("GuitarTabId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("AppUser");
-
-                    b.Navigation("GuitarTab");
-                });
-
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTabTag", b =>
-                {
-                    b.HasOne("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTab", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("GuitarTabId");
                 });
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.TabPreviewImage", b =>
@@ -381,40 +336,26 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
                     b.Navigation("GuitarTab");
                 });
 
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.Lessons.Lesson", b =>
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.Tag", b =>
                 {
-                    b.HasOne("ThirtyDaysOfShred.API.Entities.PracticeRoutines.PracticeRoutine", null)
-                        .WithMany("Lessons")
-                        .HasForeignKey("PracticeRoutineId");
-                });
+                    b.HasOne("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTab", null)
+                        .WithMany("Tags")
+                        .HasForeignKey("GuitarTabId");
 
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.Lessons.LessonTag", b =>
-                {
                     b.HasOne("ThirtyDaysOfShred.API.Entities.Lessons.Lesson", null)
                         .WithMany("Tags")
                         .HasForeignKey("LessonId");
-                });
 
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.PracticeRoutines.PracticeRoutine", b =>
-                {
-                    b.HasOne("ThirtyDaysOfShred.API.Entities.Users.AppUser", "AppUser")
-                        .WithMany("PracticeRoutines")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.PracticeRoutines.PracticeRoutineTag", b =>
-                {
-                    b.HasOne("ThirtyDaysOfShred.API.Entities.PracticeRoutines.PracticeRoutine", "PracticeRoutine")
+                    b.HasOne("ThirtyDaysOfShred.API.Entities.GuitarTabs.PracticeRoutineDto", null)
                         .WithMany("Tags")
-                        .HasForeignKey("PracticeRoutineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PracticeRoutineDtoId");
+                });
 
-                    b.Navigation("PracticeRoutine");
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.Lessons.Lesson", b =>
+                {
+                    b.HasOne("ThirtyDaysOfShred.API.Entities.GuitarTabs.PracticeRoutineDto", null)
+                        .WithMany("Lessons")
+                        .HasForeignKey("PracticeRoutineDtoId");
                 });
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.Users.Goal", b =>
@@ -441,24 +382,22 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTab", b =>
                 {
-                    b.Navigation("FavoritedByUser");
-
                     b.Navigation("PreviewImage");
+
+                    b.Navigation("Tags");
+                });
+
+            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.PracticeRoutineDto", b =>
+                {
+                    b.Navigation("Lessons");
+
+                    b.Navigation("Tabs");
 
                     b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.Lessons.Lesson", b =>
                 {
-                    b.Navigation("Tags");
-                });
-
-            modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.PracticeRoutines.PracticeRoutine", b =>
-                {
-                    b.Navigation("Lessons");
-
-                    b.Navigation("Tabs");
-
                     b.Navigation("Tags");
                 });
 

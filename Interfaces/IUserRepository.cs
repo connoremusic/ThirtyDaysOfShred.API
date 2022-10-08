@@ -1,4 +1,5 @@
 ﻿using ThirtyDaysOfShred.API.DTOs;
+using ThirtyDaysOfShred.API.Entities.GuitarTabs;
 using ThirtyDaysOfShred.API.Entities.Users;
 using ThirtyDaysOfShred.API.Helpers;
 
@@ -14,5 +15,6 @@ namespace ThirtyDaysOfShred.API.Interfaces
         Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams);
         Task<MemberDto> GetMemberAsync(string username);
         Task<bool> UpdateProfilePhoto(ProfilePhoto photo);
+        Task<bool> LikeGuitarTabAsync(GuitarTab guitarTab);
     }
 }

@@ -13,5 +13,6 @@ namespace ThirtyDaysOfShred.API.Interfaces
         Task<IEnumerable<GuitarTab>> GetGuitarTabsByAuthorAsync(string author);
         Task<IEnumerable<GuitarTab>> GetGuitarTabsBySkillLevel(int skillLevel);
         Task<IEnumerable<GuitarTabDto>> GetGuitarTabDtosAsync();
+        Task<GuitarTabDto> GetGuitarTabDtoAsync(int guitarTabId);
     }
 }

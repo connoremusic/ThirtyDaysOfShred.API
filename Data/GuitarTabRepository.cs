@@ -24,6 +24,11 @@ namespace ThirtyDaysOfShred.API.Data
             return await _context.GuitarTabs.ProjectTo<GuitarTabDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
+        public async Task<GuitarTabDto> GetGuitarTabDtoAsync(int guitarTabId)
+        {
+            return await _context.GuitarTabs.Where(x => x.Id == guitarTabId).ProjectTo<GuitarTabDto>(_mapper.ConfigurationProvider).SingleOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<GuitarTab>> GetGuitarTabsByAuthorAsync(string author)
         {
             return await _context.GuitarTabs.Where(x => x.Author == author).ToListAsync();
@@ -49,7 +54,9 @@ namespace ThirtyDaysOfShred.API.Data
 
         public async Task<IEnumerable<GuitarTab>> GetGuitarTabsBySkillLevel(int skillLevel)
         {
-            return await _context.GuitarTabs.ToListAsync();
+            return await _context.GuitarTabs
+                .Where(x => x.SkillLevel == skillLevel)
+                .ToListAsync();
         }
 
         public async Task<bool> SaveAllAsync()
@@ -60,6 +67,11 @@ namespace ThirtyDaysOfShred.API.Data
         public void Update(GuitarTab guitarTab)
         {
             _context.Entry(guitarTab).State = EntityState.Modified;
+        }
+
+        public Task<IEnumerable<GuitarTab>> GetLikedGuitarTabs(string username)
+        {
+            throw new NotImplementedException();
         }
     }
 }

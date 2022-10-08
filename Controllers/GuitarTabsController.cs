@@ -15,12 +15,14 @@ namespace ThirtyDaysOfShred.API.Controllers
         private readonly IGuitarTabRepository _guitarTabRepository;
         private readonly IMapper _mapper;
         private readonly DataContext _context;
+        private readonly UserRepository _userRepository;
 
-        public GuitarTabsController(IGuitarTabRepository guitarTabRepository, IMapper mapper, DataContext context)
+        public GuitarTabsController(IGuitarTabRepository guitarTabRepository, IMapper mapper, DataContext context, UserRepository userRepository)
         {
             _guitarTabRepository = guitarTabRepository;
             _mapper = mapper;
             _context = context;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
@@ -35,5 +37,14 @@ namespace ThirtyDaysOfShred.API.Controllers
         {
             return await _context.GuitarTabs.FindAsync(id);
         }
+
+        //[HttpPut("like-tab/{id}")]
+        //public async Task<ActionResult> LikeGuitarTab(int userId, int guitarTabId)
+        //{
+        //    var guitarTab = await _guitarTabRepository.GetGuitarTabByIdAsync(guitarTabId);
+        //    bool userAlreadyLikes = await _guitarTabRepository.FindGuitarTabLike(userId, guitarTabId);
+        //    guitarTab.NumberOfLikes++;
+
+        //}
     }
 }
