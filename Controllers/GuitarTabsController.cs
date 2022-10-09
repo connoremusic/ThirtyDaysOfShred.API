@@ -6,6 +6,7 @@ using ThirtyDaysOfShred.API.Data;
 using ThirtyDaysOfShred.API.Entities.GuitarTabs;
 using ThirtyDaysOfShred.API.Interfaces;
 using ThirtyDaysOfShred.API.Helpers;
+using ThirtyDaysOfShred.API.Extensions;
 
 namespace ThirtyDaysOfShred.API.Controllers
 {
@@ -15,9 +16,9 @@ namespace ThirtyDaysOfShred.API.Controllers
         private readonly IGuitarTabRepository _guitarTabRepository;
         private readonly IMapper _mapper;
         private readonly DataContext _context;
-        private readonly UserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
 
-        public GuitarTabsController(IGuitarTabRepository guitarTabRepository, IMapper mapper, DataContext context, UserRepository userRepository)
+        public GuitarTabsController(IGuitarTabRepository guitarTabRepository, IMapper mapper, DataContext context, IUserRepository userRepository)
         {
             _guitarTabRepository = guitarTabRepository;
             _mapper = mapper;
@@ -38,13 +39,30 @@ namespace ThirtyDaysOfShred.API.Controllers
             return await _context.GuitarTabs.FindAsync(id);
         }
 
-        //[HttpPut("like-tab/{id}")]
-        //public async Task<ActionResult> LikeGuitarTab(int userId, int guitarTabId)
-        //{
-        //    var guitarTab = await _guitarTabRepository.GetGuitarTabByIdAsync(guitarTabId);
-        //    bool userAlreadyLikes = await _guitarTabRepository.FindGuitarTabLike(userId, guitarTabId);
-        //    guitarTab.NumberOfLikes++;
+        [HttpPost("{guitarTabId}")]
+        public async Task<ActionResult> AddFavoriteTab(int guitarTabId)
+        {
+            var guitarTab = await _guitarTabRepository.GetGuitarTabByIdAsync(guitarTabId);
+            if (guitarTab == null) return NotFound();
 
-        //}
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+
+            var guitarTabFavorite = await _userRepository.UserHasFavorite(user.Id, guitarTabId);
+            if (guitarTabFavorite != null) return BadRequest("You already favorited this tab");
+
+            guitarTabFavorite = new GuitarTabFavorite
+            {
+                GuitarTab = guitarTab,
+                GuitarTabId = guitarTab.Id,
+                AppUser = user,
+                AppUserId = user.Id
+            };
+
+            user.FavoriteTabs.Add(guitarTabFavorite);
+
+            if (await _userRepository.SaveAllAsync()) return Ok();
+
+            return BadRequest("Failed to add to favorites");
+        }
     }
 }

@@ -69,9 +69,11 @@ namespace ThirtyDaysOfShred.API.Data
             _context.Entry(guitarTab).State = EntityState.Modified;
         }
 
-        public Task<IEnumerable<GuitarTab>> GetLikedGuitarTabs(string username)
+        public async Task<IEnumerable<GuitarTabDto>> GetUserGuitarTabDtosAsync(int userId)
         {
-            throw new NotImplementedException();
+            return await _context.GuitarTabs
+                .Include(x => x.FavoritedByUser)
+                .Where(x => x.Equals(userId)).ProjectTo<GuitarTabDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
     }
 }

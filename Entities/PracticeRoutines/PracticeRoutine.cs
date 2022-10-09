@@ -12,7 +12,7 @@ namespace ThirtyDaysOfShred.API.Entities.PracticeRoutines
         public int SkillLevel { get; set; }
         public string Author { get; set; }
         public bool IsPublic { get; set; }
-        public ICollection<GuitarTab> Tabs { get; set; }
+        public ICollection<PracticeRoutineTab> HasGuitarTab { get; set; }
         public ICollection<Lesson> Lessons { get; set; }
         public ICollection<PracticeRoutineTag> Tags { get; set; }
         public DateTime Created { get; set; }

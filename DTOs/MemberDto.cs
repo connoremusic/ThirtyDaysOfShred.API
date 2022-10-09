@@ -18,7 +18,7 @@ namespace ThirtyDaysOfShred.API.DTOs
         public ICollection<GoalDto> Goals { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
         public DateTime LastActive { get; set; } = DateTime.Now;
-        public ICollection<GuitarTab> FavoriteTabs { get; set; }
+        public ICollection<GuitarTabDto> FavoriteTabs { get; set; }
         public ICollection<PracticeRoutine> PracticeRoutines { get; set; }
     }
 }

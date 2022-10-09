@@ -18,8 +18,20 @@ namespace ThirtyDaysOfShred.API.Helpers
             CreateMap<ProfilePhoto, ProfilePhotoDto>();
             CreateMap<TabPreviewImage, TabPreviewImageDto>();
             CreateMap<RegisterDto, AppUser>();
+            CreateMap<GuitarTabTag, GuitarTabTagDto>();
             CreateMap<GuitarTab, GuitarTabDto>()
                 .ForMember(dest => dest.PreviewImageUrl, opt => opt.MapFrom(src => src.PreviewImage.Url));
+            CreateMap<GuitarTabFavorite, GuitarTabDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.GuitarTabId))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.GuitarTab.Title))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.GuitarTab.Description))
+                .ForMember(dest => dest.SkillLevel, opt => opt.MapFrom(src => src.GuitarTab.SkillLevel))
+                .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.GuitarTab.Author))
+                .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(src => src.GuitarTab.IsPublic))
+                .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.GuitarTab.Tags))
+                .ForMember(dest => dest.FileLocationUrl, opt => opt.MapFrom(src => src.GuitarTab.FileLocationUrl))
+                .ForMember(dest => dest.PreviewImageUrl, opt => opt.MapFrom(src => src.GuitarTab.PreviewImage.Url))
+                .ForMember(dest => dest.NumberOfFavorites, opt => opt.MapFrom(src => src.GuitarTab.NumberOfFavorites));
         }
     }
 }

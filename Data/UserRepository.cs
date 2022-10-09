@@ -96,5 +96,10 @@ namespace ThirtyDaysOfShred.API.Data
         {
             throw new NotImplementedException();
         }
+
+        public async Task<GuitarTabFavorite> UserHasFavorite(int userId, int guitarTabId)
+        {
+            return await _context.FavoriteGuitarTabs.FindAsync(userId, guitarTabId);
+        }
     }
 }

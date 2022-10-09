@@ -16,5 +16,6 @@ namespace ThirtyDaysOfShred.API.Interfaces
         Task<MemberDto> GetMemberAsync(string username);
         Task<bool> UpdateProfilePhoto(ProfilePhoto photo);
         Task<bool> LikeGuitarTabAsync(GuitarTab guitarTab);
+        Task<GuitarTabFavorite> UserHasFavorite(int userId, int guitarTabId);
     }
 }

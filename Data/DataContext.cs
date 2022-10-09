@@ -20,6 +20,7 @@ namespace ThirtyDaysOfShred.API.Data
         public DbSet<PracticeRoutineTag> PracticeRoutineTags { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<PracticeRoutine> PracticeRoutines { get; set; }
+        public DbSet<PracticeRoutineTab> PracticeRoutinesTabs { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -37,6 +38,21 @@ namespace ThirtyDaysOfShred.API.Data
                 .HasOne(t => t.GuitarTab)
                 .WithMany(u => u.FavoritedByUser)
                 .HasForeignKey(t => t.GuitarTabId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PracticeRoutineTab>()
+                .HasKey(k => new { k.PracticeRoutineId, k.GuitarTabId });
+
+            builder.Entity<PracticeRoutineTab>()
+                .HasOne(t => t.GuitarTab)
+                .WithMany(p => p.InPracticeRoutine)
+                .HasForeignKey(t => t.GuitarTabId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<PracticeRoutineTab>()
+                .HasOne(p => p.PracticeRoutine)
+                .WithMany(t => t.HasGuitarTab)
+                .HasForeignKey(p => p.PracticeRoutineId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

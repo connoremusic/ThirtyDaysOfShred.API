@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThirtyDaysOfShred.API.Data;
 
@@ -11,9 +12,10 @@ using ThirtyDaysOfShred.API.Data;
 namespace ThirtyDaysOfShred.API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221008145430_Added-PracticeRoutineTab-Entity")]
+    partial class AddedPracticeRoutineTabEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,7 +81,7 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("GuitarTabId")
+                    b.Property<int?>("GuitarTabId")
                         .HasColumnType("int");
 
                     b.Property<string>("TagName")
@@ -167,7 +169,7 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("LessonId")
+                    b.Property<int?>("LessonId")
                         .HasColumnType("int");
 
                     b.Property<string>("TagName")
@@ -368,13 +370,9 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTabTag", b =>
                 {
-                    b.HasOne("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTab", "GuitarTab")
+                    b.HasOne("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTab", null)
                         .WithMany("Tags")
-                        .HasForeignKey("GuitarTabId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("GuitarTab");
+                        .HasForeignKey("GuitarTabId");
                 });
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.TabPreviewImage", b =>
@@ -397,13 +395,9 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.Lessons.LessonTag", b =>
                 {
-                    b.HasOne("ThirtyDaysOfShred.API.Entities.Lessons.Lesson", "Lesson")
+                    b.HasOne("ThirtyDaysOfShred.API.Entities.Lessons.Lesson", null)
                         .WithMany("Tags")
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Lesson");
+                        .HasForeignKey("LessonId");
                 });
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.PracticeRoutines.PracticeRoutine", b =>

@@ -1,4 +1,4 @@
-﻿using ThirtyDaysOfShred.API.Entities.Users;
+﻿using ThirtyDaysOfShred.API.Entities.PracticeRoutines;
 
 namespace ThirtyDaysOfShred.API.Entities.GuitarTabs
 {
@@ -14,6 +14,7 @@ namespace ThirtyDaysOfShred.API.Entities.GuitarTabs
         public string FileLocationUrl { get; set; }
         public TabPreviewImage PreviewImage { get; set; }
         public ICollection<GuitarTabFavorite> FavoritedByUser { get; set; }
+        public ICollection<PracticeRoutineTab> InPracticeRoutine { get; set; }
         public int NumberOfFavorites { get; set; }
     }
 }

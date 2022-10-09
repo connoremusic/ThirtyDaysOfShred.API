@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ThirtyDaysOfShred.API.Data;
 using ThirtyDaysOfShred.API.DTOs;
+using ThirtyDaysOfShred.API.Entities.GuitarTabs;
 using ThirtyDaysOfShred.API.Entities.Users;
 using ThirtyDaysOfShred.API.Extensions;
 using ThirtyDaysOfShred.API.Helpers;
@@ -121,18 +122,11 @@ namespace ThirtyDaysOfShred.API.Controllers
             return BadRequest("Failed to delete the photo");
         }
 
-        //[HttpPut("tab-like/{id}")]
-        //public async Task<ActionResult> FavoriteGuitarTab(int guitarTabId)
-        //{
-        //    var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
-
-        //    var guitarTab = await _guitarTabRepository.GetGuitarTabByIdAsync(guitarTabId);
-
-        //    user.FavoriteTabs.Add(guitarTab);
-
-        //    if (await _userRepository.SaveAllAsync()) return Ok();
-
-        //    return BadRequest("Something went wrong");
-        //}
+        [HttpGet("favorite-tabs/{username}")]
+        public async Task<ActionResult<IEnumerable<GuitarTab>>> GetUserFavTabsAsync(int userId)
+        {
+            var tabs = await _guitarTabRepository.GetUserGuitarTabDtosAsync(userId);
+            return Ok(tabs);
+        }     
     }
 }
