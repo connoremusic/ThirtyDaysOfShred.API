@@ -9,6 +9,7 @@ namespace ThirtyDaysOfShred.API.Entities.GuitarTabs
         public string Description { get; set; }
         public int SkillLevel { get; set; }
         public string Author { get; set; }
+        public DateTime Created { get; set; } = DateTime.Now;
         public bool IsPublic { get; set; }
         public ICollection<GuitarTabTag> Tags { get; set; }
         public string FileLocationUrl { get; set; }

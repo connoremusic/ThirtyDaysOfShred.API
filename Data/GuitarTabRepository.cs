@@ -4,6 +4,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using ThirtyDaysOfShred.API.DTOs;
 using ThirtyDaysOfShred.API.Entities.GuitarTabs;
+using ThirtyDaysOfShred.API.Helpers;
 using ThirtyDaysOfShred.API.Interfaces;
 
 namespace ThirtyDaysOfShred.API.Data
@@ -19,9 +20,32 @@ namespace ThirtyDaysOfShred.API.Data
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<GuitarTabDto>> GetGuitarTabDtosAsync()
+        public async Task<PagedList<GuitarTabDto>> GetGuitarTabDtosAsync(GuitarTabParams guitarTabParams)
         {
-            return await _context.GuitarTabs.ProjectTo<GuitarTabDto>(_mapper.ConfigurationProvider).ToListAsync();
+            var query = _context.GuitarTabs.AsQueryable();
+
+
+            if (guitarTabParams.SearchString != null)
+            {
+            string[] tags = guitarTabParams.SearchString.Split(" ");
+
+                foreach (var tag in tags)
+                {
+                    query = query.Where(t => t.Tags.Any(t => t.TagName.Contains(tag)) || t.Title.Contains(guitarTabParams.SearchString));
+                }
+            }
+            
+            query = query.Where(t => t.SkillLevel <= guitarTabParams.MaxSkillLevel && t.SkillLevel >= guitarTabParams.MinSkillLevel);
+
+            query = guitarTabParams.OrderBy switch
+            {
+                "created" => query.OrderByDescending(t => t.Created),
+                "popular" => query.OrderByDescending(t => t.NumberOfFavorites),
+                _ => query.OrderByDescending(t => t.Title)
+            };
+
+            return await PagedList<GuitarTabDto>.CreateAsync(query.ProjectTo<GuitarTabDto>(_mapper
+                .ConfigurationProvider).AsNoTracking(), guitarTabParams.PageNumber, guitarTabParams.PageSize);
         }
 
         public async Task<GuitarTabDto> GetGuitarTabDtoAsync(int guitarTabId)

@@ -27,9 +27,11 @@ namespace ThirtyDaysOfShred.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GuitarTab>>> GetTabsAsync()
+        public async Task<ActionResult<IEnumerable<GuitarTab>>> GetTabsAsync([FromQuery]GuitarTabParams guitarTabParams)
         {
-            var tabs = await _guitarTabRepository.GetGuitarTabDtosAsync();
+            var tabs = await _guitarTabRepository.GetGuitarTabDtosAsync(guitarTabParams);
+
+            Response.AddPaginationHeader(tabs.CurrentPage, tabs.PageSize, tabs.TotalCount, tabs.TotalPages);
             return Ok(tabs);
         }
 

@@ -9,6 +9,7 @@ namespace ThirtyDaysOfShred.API.DTOs
         public string Description { get; set; }
         public int SkillLevel { get; set; }
         public string Author { get; set; }
+        public DateTime Created { get; set; }
         public bool IsPublic { get; set; }
         public ICollection<GuitarTabTagDto> Tags { get; set; }
         public string FileLocationUrl { get; set; }

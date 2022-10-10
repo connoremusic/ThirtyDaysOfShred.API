@@ -25,6 +25,9 @@ namespace ThirtyDaysOfShred.API.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<GuitarTabTag>()
+                .HasKey(k => new { k.GuitarTabId, k.TagName });
+
             builder.Entity<GuitarTabFavorite>()
                 .HasKey(k => new { k.AppUserId, k.GuitarTabId });
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThirtyDaysOfShred.API.Data;
 
@@ -11,9 +12,10 @@ using ThirtyDaysOfShred.API.Data;
 namespace ThirtyDaysOfShred.API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221009233628_Added-Tab-Create-Date")]
+    partial class AddedTabCreateDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,13 +78,21 @@ namespace ThirtyDaysOfShred.API.Data.Migrations
 
             modelBuilder.Entity("ThirtyDaysOfShred.API.Entities.GuitarTabs.GuitarTabTag", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
                     b.Property<int>("GuitarTabId")
                         .HasColumnType("int");
 
                     b.Property<string>("TagName")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("GuitarTabId", "TagName");
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuitarTabId");
 
                     b.ToTable("GuitarTabTags");
                 });
