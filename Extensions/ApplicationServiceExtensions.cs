@@ -16,6 +16,7 @@ namespace ThirtyDaysOfShred.API.Extensions
             services.AddScoped<LogUserActivity>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGuitarTabRepository, GuitarTabRepository>();
+            services.AddScoped<IMessageRespository, MessageRepository>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddDbContext<DataContext>(options =>
             {

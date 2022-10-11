@@ -21,6 +21,7 @@ namespace ThirtyDaysOfShred.API.Data
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<PracticeRoutine> PracticeRoutines { get; set; }
         public DbSet<PracticeRoutineTab> PracticeRoutinesTabs { get; set; }
+        public DbSet<Message> Messages { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -57,6 +58,16 @@ namespace ThirtyDaysOfShred.API.Data
                 .WithMany(t => t.HasGuitarTab)
                 .HasForeignKey(p => p.PracticeRoutineId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Message>()
+                .HasOne(u => u.Recipient)
+                .WithMany(m => m.MessagesReceived)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Message>()
+                .HasOne(u => u.Sender)
+                .WithMany(m => m.MessagesSent)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

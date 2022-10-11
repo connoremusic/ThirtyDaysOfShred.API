@@ -21,5 +21,7 @@ namespace ThirtyDaysOfShred.API.Entities.Users
         public DateTime LastActive { get; set; } = DateTime.Now;
         public ICollection<GuitarTabFavorite> FavoriteTabs { get; set; }
         public ICollection<PracticeRoutine> PracticeRoutines { get; set; }
+        public ICollection<Message> MessagesSent { get; set; }
+        public ICollection<Message> MessagesReceived { get; set; }
     }
 }
