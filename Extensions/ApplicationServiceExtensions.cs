@@ -3,6 +3,7 @@ using ThirtyDaysOfShred.API.Data;
 using ThirtyDaysOfShred.API.Helpers;
 using ThirtyDaysOfShred.API.Interfaces;
 using ThirtyDaysOfShred.API.Services;
+using ThirtyDaysOfShred.API.SignalR;
 
 namespace ThirtyDaysOfShred.API.Extensions
 {
@@ -10,6 +11,7 @@ namespace ThirtyDaysOfShred.API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
+            services.AddSingleton<PresenceTracker>();
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IPhotoService, PhotoService>();
