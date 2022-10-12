@@ -1,14 +1,11 @@
-﻿using ThirtyDaysOfShred.API.Entities.GuitarTabs;
+﻿using Microsoft.AspNetCore.Identity;
+using ThirtyDaysOfShred.API.Entities.GuitarTabs;
 using ThirtyDaysOfShred.API.Entities.PracticeRoutines;
 
 namespace ThirtyDaysOfShred.API.Entities.Users
 {
-    public class AppUser
+    public class AppUser : IdentityUser<int>
     {
-        public int Id { get; set; }
-        public string UserName { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
         public string KnownAs { get; set; }
         public ProfilePhoto ProfilePhoto { get; set; }
         public string Gender { get; set; }
@@ -23,5 +20,6 @@ namespace ThirtyDaysOfShred.API.Entities.Users
         public ICollection<PracticeRoutine> PracticeRoutines { get; set; }
         public ICollection<Message> MessagesSent { get; set; }
         public ICollection<Message> MessagesReceived { get; set; }
+        public ICollection<AppUserRole> UserRoles { get; set; }
     }
 }

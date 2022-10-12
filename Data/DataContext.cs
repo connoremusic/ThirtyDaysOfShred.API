@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ThirtyDaysOfShred.API.Entities.GuitarTabs;
 using ThirtyDaysOfShred.API.Entities.Lessons;
 using ThirtyDaysOfShred.API.Entities.PracticeRoutines;
@@ -6,13 +8,14 @@ using ThirtyDaysOfShred.API.Entities.Users;
 
 namespace ThirtyDaysOfShred.API.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<AppUser, AppRole, int, 
+        IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>, 
+        IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public DataContext(DbContextOptions options) : base(options)
         {
         }
 
-        public DbSet<AppUser> Users { get; set; }
         public DbSet<GuitarTab> GuitarTabs { get; set; }
         public DbSet<GuitarTabTag> GuitarTabTags { get; set; }
         public DbSet<GuitarTabFavorite> FavoriteGuitarTabs { get; set; }
@@ -25,6 +28,19 @@ namespace ThirtyDaysOfShred.API.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<AppUser>()
+                .HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.User)
+                .HasForeignKey(ur => ur.UserId)
+                .IsRequired();
+
+            builder.Entity<AppRole>()
+                .HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.Role)
+                .HasForeignKey(ur => ur.RoleId)
+                .IsRequired();
+
 
             builder.Entity<GuitarTabTag>()
                 .HasKey(k => new { k.GuitarTabId, k.TagName });

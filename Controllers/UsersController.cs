@@ -29,7 +29,7 @@ namespace ThirtyDaysOfShred.API.Controllers
             _photoService = photoService;
             _guitarTabRepository = guitarTabRepository;
         }
-
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersAsync([FromQuery]UserParams userParams)
         {
@@ -45,7 +45,7 @@ namespace ThirtyDaysOfShred.API.Controllers
 
             return Ok(users);
         }
-
+        
         [HttpGet("{username}", Name = "GetUser")]
         public async Task<ActionResult<MemberDto>> GetUserAsync(string username)
         {

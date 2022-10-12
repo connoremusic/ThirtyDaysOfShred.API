@@ -1,8 +1,10 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ThirtyDaysOfShred.API.Data;
+using ThirtyDaysOfShred.API.Entities.Users;
 using ThirtyDaysOfShred.API.Extensions;
 using ThirtyDaysOfShred.API.Interfaces;
 using ThirtyDaysOfShred.API.Middleware;
@@ -63,8 +65,10 @@ static async Task Configure(WebApplication host)
     try
     {
         var context = services.GetRequiredService<DataContext>();
+        var userManager = services.GetRequiredService<UserManager<AppUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
         await context.Database.MigrateAsync();
-        await Seed.SeedUsers(context);
+        await Seed.SeedUsers(userManager, roleManager);
         await Seed.SeedGuitarTabs(context);
     }
     catch (Exception ex)
