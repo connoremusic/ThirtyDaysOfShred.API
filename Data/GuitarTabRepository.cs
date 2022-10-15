@@ -22,7 +22,23 @@ namespace ThirtyDaysOfShred.API.Data
 
         public async Task<PagedList<GuitarTabDto>> GetGuitarTabDtosAsync(GuitarTabParams guitarTabParams)
         {
-            var query = _context.GuitarTabs.AsQueryable();
+            var query = _context.GuitarTabs
+                .Include(x => x.FavoritedByUser)
+                .Select(t => new GuitarTabDto
+                {
+                    Id = t.Id,
+                    Title = t.Title,
+                    Description = t.Description,
+                    SkillLevel = t.SkillLevel,
+                    Author = t.Author,
+                    Created = t.Created,
+                    IsPublic = t.IsPublic,
+                    FileLocationUrl = t.FileLocationUrl,
+                    PreviewImageUrl = t.PreviewImage.Url,
+                    NumberOfFavorites = t.FavoritedByUser.Count,
+                    Tags = t.Tags
+                })
+                .AsQueryable();
 
 
             if (guitarTabParams.SearchString != null)
@@ -41,11 +57,11 @@ namespace ThirtyDaysOfShred.API.Data
             {
                 "created" => query.OrderByDescending(t => t.Created),
                 "popular" => query.OrderByDescending(t => t.NumberOfFavorites),
+                "difficulty" => query.OrderByDescending(t => t.SkillLevel),
                 _ => query.OrderByDescending(t => t.Title)
             };
 
-            return await PagedList<GuitarTabDto>.CreateAsync(query.ProjectTo<GuitarTabDto>(_mapper
-                .ConfigurationProvider).AsNoTracking(), guitarTabParams.PageNumber, guitarTabParams.PageSize);
+            return await PagedList<GuitarTabDto>.CreateAsync(query.AsNoTracking(), guitarTabParams.PageNumber, guitarTabParams.PageSize);
         }
 
         public async Task<GuitarTabDto> GetGuitarTabDtoAsync(int guitarTabId)
@@ -83,11 +99,6 @@ namespace ThirtyDaysOfShred.API.Data
                 .ToListAsync();
         }
 
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
-
         public void Update(GuitarTab guitarTab)
         {
             _context.Entry(guitarTab).State = EntityState.Modified;
@@ -98,6 +109,13 @@ namespace ThirtyDaysOfShred.API.Data
             return await _context.GuitarTabs
                 .Include(x => x.FavoritedByUser)
                 .Where(x => x.Equals(userId)).ProjectTo<GuitarTabDto>(_mapper.ConfigurationProvider).ToListAsync();
+        }
+
+        public async Task<int> GetFavoriteCountAsync(int guitarTabId)
+        {
+            return await _context.FavoriteGuitarTabs
+                .Where(x => x.GuitarTabId == guitarTabId)
+                .CountAsync();
         }
     }
 }

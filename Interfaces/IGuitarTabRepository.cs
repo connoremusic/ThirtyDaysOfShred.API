@@ -7,7 +7,6 @@ namespace ThirtyDaysOfShred.API.Interfaces
     public interface IGuitarTabRepository
     {
         void Update(GuitarTab guitarTab);
-        Task<bool> SaveAllAsync();
         Task<IEnumerable<GuitarTab>> GetGuitarTabsAsync();
         Task<GuitarTab> GetGuitarTabByIdAsync(int id);
         Task<IEnumerable<GuitarTab>> GetGuitarTabsByTitleAsync(string title);
@@ -16,5 +15,6 @@ namespace ThirtyDaysOfShred.API.Interfaces
         Task<PagedList<GuitarTabDto>> GetGuitarTabDtosAsync(GuitarTabParams guitarTabParams);
         Task<GuitarTabDto> GetGuitarTabDtoAsync(int guitarTabId);
         Task<IEnumerable<GuitarTabDto>> GetUserGuitarTabDtosAsync(int userId);
+        Task<int> GetFavoriteCountAsync(int guitarTabId);
     }
 }

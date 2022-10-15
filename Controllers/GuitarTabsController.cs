@@ -7,29 +7,26 @@ using ThirtyDaysOfShred.API.Entities.GuitarTabs;
 using ThirtyDaysOfShred.API.Interfaces;
 using ThirtyDaysOfShred.API.Helpers;
 using ThirtyDaysOfShred.API.Extensions;
+using ThirtyDaysOfShred.API.DTOs;
 
 namespace ThirtyDaysOfShred.API.Controllers
 {
     [Authorize]
     public class GuitarTabsController : BaseApiController
     {
-        private readonly IGuitarTabRepository _guitarTabRepository;
-        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly DataContext _context;
-        private readonly IUserRepository _userRepository;
 
-        public GuitarTabsController(IGuitarTabRepository guitarTabRepository, IMapper mapper, DataContext context, IUserRepository userRepository)
+        public GuitarTabsController(IUnitOfWork unitOfWork, DataContext context)
         {
-            _guitarTabRepository = guitarTabRepository;
-            _mapper = mapper;
+            _unitOfWork = unitOfWork;
             _context = context;
-            _userRepository = userRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GuitarTab>>> GetTabsAsync([FromQuery]GuitarTabParams guitarTabParams)
+        public async Task<ActionResult<IEnumerable<GuitarTabDto>>> GetTabsAsync([FromQuery]GuitarTabParams guitarTabParams)
         {
-            var tabs = await _guitarTabRepository.GetGuitarTabDtosAsync(guitarTabParams);
+            var tabs = await _unitOfWork.GuitarTabRepository.GetGuitarTabDtosAsync(guitarTabParams);
 
             Response.AddPaginationHeader(tabs.CurrentPage, tabs.PageSize, tabs.TotalCount, tabs.TotalPages);
             return Ok(tabs);
@@ -44,12 +41,12 @@ namespace ThirtyDaysOfShred.API.Controllers
         [HttpPost("{guitarTabId}")]
         public async Task<ActionResult> AddFavoriteTab(int guitarTabId)
         {
-            var guitarTab = await _guitarTabRepository.GetGuitarTabByIdAsync(guitarTabId);
+            var guitarTab = await _unitOfWork.GuitarTabRepository.GetGuitarTabByIdAsync(guitarTabId);
             if (guitarTab == null) return NotFound();
 
-            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
 
-            var guitarTabFavorite = await _userRepository.UserHasFavorite(user.Id, guitarTabId);
+            var guitarTabFavorite = await _unitOfWork.UserRepository.UserHasFavorite(user.Id, guitarTabId);
             if (guitarTabFavorite != null) return BadRequest("You already favorited this tab");
 
             guitarTabFavorite = new GuitarTabFavorite
@@ -62,7 +59,7 @@ namespace ThirtyDaysOfShred.API.Controllers
 
             user.FavoriteTabs.Add(guitarTabFavorite);
 
-            if (await _userRepository.SaveAllAsync()) return Ok();
+            if (await _unitOfWork.Complete()) return Ok();
 
             return BadRequest("Failed to add to favorites");
         }

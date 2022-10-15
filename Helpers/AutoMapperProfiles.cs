@@ -31,7 +31,7 @@ namespace ThirtyDaysOfShred.API.Helpers
                 .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.GuitarTab.Tags))
                 .ForMember(dest => dest.FileLocationUrl, opt => opt.MapFrom(src => src.GuitarTab.FileLocationUrl))
                 .ForMember(dest => dest.PreviewImageUrl, opt => opt.MapFrom(src => src.GuitarTab.PreviewImage.Url))
-                .ForMember(dest => dest.NumberOfFavorites, opt => opt.MapFrom(src => src.GuitarTab.NumberOfFavorites));
+                .ForMember(dest => dest.NumberOfFavorites, opt => opt.MapFrom(src => src.GuitarTab.FavoritedByUser.Count));
             CreateMap<Message, MessageDto>()
                 .ForMember(dest => dest.SenderPhotoUrl, opt => opt.MapFrom(src => src.Sender.ProfilePhoto.Url))
                 .ForMember(dest => dest.RecipientPhotoUrl, opt => opt.MapFrom(src => src.Recipient.ProfilePhoto.Url));

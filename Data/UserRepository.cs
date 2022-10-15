@@ -75,11 +75,6 @@ namespace ThirtyDaysOfShred.API.Data
                 .ToListAsync();
         }
 
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
-
         public async Task<bool> UpdateProfilePhoto(ProfilePhoto photo)
         {
             _context.Entry(photo).State = EntityState.Modified;

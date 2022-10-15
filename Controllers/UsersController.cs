@@ -17,29 +17,27 @@ namespace ThirtyDaysOfShred.API.Controllers
     [Authorize]
     public class UsersController : BaseApiController
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IPhotoService _photoService;
-        private readonly IGuitarTabRepository _guitarTabRepository;
 
-        public UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService, IGuitarTabRepository guitarTabRepository)
+        public UsersController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService)
         {
-            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _photoService = photoService;
-            _guitarTabRepository = guitarTabRepository;
         }
         
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersAsync([FromQuery]UserParams userParams)
         {
-            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
             userParams.CurrentUserName = User.GetUsername();
 
             if (string.IsNullOrEmpty(userParams.Gender))
                 userParams.Gender = user.Gender == "male" ? "female" : "male";
 
-            var users = await _userRepository.GetMembersAsync(userParams);
+            var users = await _unitOfWork.UserRepository.GetMembersAsync(userParams);
 
             Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
 
@@ -49,19 +47,19 @@ namespace ThirtyDaysOfShred.API.Controllers
         [HttpGet("{username}", Name = "GetUser")]
         public async Task<ActionResult<MemberDto>> GetUserAsync(string username)
         {
-            return await _userRepository.GetMemberAsync(username);
+            return await _unitOfWork.UserRepository.GetMemberAsync(username);
         }
 
         [HttpPut]
         public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
         {
-            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
 
             _mapper.Map(memberUpdateDto, user);
 
-            _userRepository.Update(user);
+            _unitOfWork.UserRepository.Update(user);
 
-            if (await _userRepository.SaveAllAsync()) return NoContent();
+            if (await _unitOfWork.Complete()) return NoContent();
 
             return BadRequest("Failed to update user");
         }
@@ -69,7 +67,7 @@ namespace ThirtyDaysOfShred.API.Controllers
         [HttpPost("add-photo")]
         public async Task<ActionResult<ProfilePhotoDto>> UpdateProfilePhoto([FromForm]IFormFile file)
         {
-            var user =  await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var user =  await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
 
             var result = await _photoService.AddPhotoAsync(file);
 
@@ -91,7 +89,7 @@ namespace ThirtyDaysOfShred.API.Controllers
 
             user.ProfilePhoto = photo;
 
-            if (await _userRepository.SaveAllAsync())
+            if (await _unitOfWork.Complete())
             {
                 return CreatedAtRoute("GetUser", new {username = user.UserName}, _mapper.Map<ProfilePhotoDto>(user.ProfilePhoto));
                 //return _mapper.Map<ProfilePhotoDto>(user.ProfilePhoto);
@@ -103,7 +101,7 @@ namespace ThirtyDaysOfShred.API.Controllers
         [HttpDelete("delete-photo/{photoId}")]
         public async Task<ActionResult> DeletePhoto(int photoId)
         {
-            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
 
             var photo = user.ProfilePhoto;
 
@@ -117,7 +115,7 @@ namespace ThirtyDaysOfShred.API.Controllers
 
             user.ProfilePhoto = null;
 
-            if (await _userRepository.SaveAllAsync()) return Ok();
+            if (await _unitOfWork.Complete()) return Ok();
 
             return BadRequest("Failed to delete the photo");
         }
@@ -125,7 +123,7 @@ namespace ThirtyDaysOfShred.API.Controllers
         [HttpGet("favorite-tabs/{username}")]
         public async Task<ActionResult<IEnumerable<GuitarTab>>> GetUserFavTabsAsync(int userId)
         {
-            var tabs = await _guitarTabRepository.GetUserGuitarTabDtosAsync(userId);
+            var tabs = await _unitOfWork.GuitarTabRepository.GetUserGuitarTabDtosAsync(userId);
             return Ok(tabs);
         }     
     }
