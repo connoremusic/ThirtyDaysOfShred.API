@@ -15,6 +15,7 @@ namespace ThirtyDaysOfShred.API.Extensions
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IPhotoService, PhotoService>();
+            services.AddScoped<ITabService, TabService>();
             services.AddScoped<LogUserActivity>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);

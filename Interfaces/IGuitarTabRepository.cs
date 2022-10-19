@@ -16,5 +16,6 @@ namespace ThirtyDaysOfShred.API.Interfaces
         Task<GuitarTabDto> GetGuitarTabDtoAsync(int guitarTabId);
         Task<IEnumerable<GuitarTabDto>> GetUserGuitarTabDtosAsync(int userId);
         Task<int> GetFavoriteCountAsync(int guitarTabId);
+        Task AddNewGuitarTab (GuitarTab guitarTab);
     }
 }

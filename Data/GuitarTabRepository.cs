@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ThirtyDaysOfShred.API.DTOs;
 using ThirtyDaysOfShred.API.Entities.GuitarTabs;
@@ -76,7 +77,7 @@ namespace ThirtyDaysOfShred.API.Data
 
         public async Task<GuitarTab> GetGuitarTabByIdAsync(int id)
         {
-            return await _context.GuitarTabs.FindAsync(id);
+            return await _context.GuitarTabs.Include(t => t.PreviewImage).FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public async Task<IEnumerable<GuitarTab>> GetGuitarTabsByTitleAsync(string title)
@@ -116,6 +117,11 @@ namespace ThirtyDaysOfShred.API.Data
             return await _context.FavoriteGuitarTabs
                 .Where(x => x.GuitarTabId == guitarTabId)
                 .CountAsync();
+        }
+
+        public async Task AddNewGuitarTab(GuitarTab guitarTab)
+        {
+            await _context.GuitarTabs.AddAsync(guitarTab);
         }
     }
 }

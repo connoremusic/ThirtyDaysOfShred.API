@@ -21,6 +21,7 @@ namespace ThirtyDaysOfShred.API.Helpers
             CreateMap<GuitarTabTag, GuitarTabTagDto>();
             CreateMap<GuitarTab, GuitarTabDto>()
                 .ForMember(dest => dest.PreviewImageUrl, opt => opt.MapFrom(src => src.PreviewImage.Url));
+            CreateMap<GuitarTabDto, GuitarTab>();
             CreateMap<GuitarTabFavorite, GuitarTabDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.GuitarTabId))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.GuitarTab.Title))
